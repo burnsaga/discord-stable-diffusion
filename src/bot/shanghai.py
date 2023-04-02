@@ -25,8 +25,12 @@ class Shanghai(commands.Bot, ABC):
         if message.author == self.user:
             try:
                 # Check if the message from Shanghai was actually a generation
-                if message.embeds[0].fields[0].name == 'command':
+                if message.embeds[0].fields[0].name == 'Compute used':
                     await message.add_reaction('❌')
+                    await message.add_reaction('🔁')
+                    await message.add_reaction('👆')
+                    await message.add_reaction('💾')
+
             except:
                 pass
 

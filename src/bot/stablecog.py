@@ -186,10 +186,13 @@ class StableCog(commands.Cog, name='Stable Diffusion', description='Create image
                 buffer.seek(0)
                 embed = discord.Embed()
                 embed.colour = embed_color
-                embed.add_field(name='command', value=f'``{queue_object.command_str}``', inline=False)
-                embed.add_field(name='compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
+                #embed.add_field(name='Command', value=f'``{queue_object.command_str}``', inline=False)
+                embed.add_field(name='Compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
                                 inline=False)
-                embed.add_field(name='delete', value='React with ❌ to delete your own generation')
+                embed.add_field(name='Delete', value='React with ❌ to delete your own generation')
+                embed.add_field(name='Regenerate', value='React with 🔁 to regenerate with a different seed')
+                embed.add_field(name='Upscale', value='React with 👆 to upscale')
+                embed.add_field(name='Download', value='React with 💾 to save the image')
                 # fix errors if user doesn't have pfp
                 if queue_object.ctx.author.avatar is None:
                     embed.set_footer(
