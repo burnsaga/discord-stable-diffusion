@@ -19,17 +19,18 @@ class Shanghai(commands.Bot, ABC):
     async def on_ready(self):
         self.logger.info(f'Logged in as {self.user.name} ({self.user.id})')
         await self.change_presence(
-            activity=discord.Activity(type=discord.ActivityType.watching, name='you over the seven seas.'))
+            activity=discord.Activity(type=discord.ActivityType.playing, name='/dream'))
 
     async def on_message(self, message):
         if message.author == self.user:
             try:
                 # Check if the message from Shanghai was actually a generation
-                if message.embeds[0].fields[0].name == 'Compute used':
+                if message.embeds[0].fields[0].name == '':
                     await message.add_reaction('❌')
-                    await message.add_reaction('🔁')
-                    await message.add_reaction('👆')
-                    await message.add_reaction('💾')
+                    #await message.add_reaction('🔁')
+                    #await message.add_reaction('👁')
+                    #await message.add_reaction('👆')
+                    #await message.add_reaction('💾')
 
             except:
                 pass
@@ -41,3 +42,5 @@ class Shanghai(commands.Bot, ABC):
                 # look at the message footer to see if the generation was by the user who reacted
                 if message.embeds[0].footer.text == f'{ctx.member.name}#{ctx.member.discriminator}':
                     await message.delete()
+# queue_object.ctx.channel.send(content=f'<@{queue_object.ctx.author.id}>', embed=embed,
+#                                                  file=discord.File(fp=buffer, filename=f'{seed}.png')))

@@ -187,19 +187,24 @@ class StableCog(commands.Cog, name='Stable Diffusion', description='Create image
                 embed = discord.Embed()
                 embed.colour = embed_color
                 #embed.add_field(name='Command', value=f'``{queue_object.command_str}``', inline=False)
-                embed.add_field(name='Compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
-                                inline=False)
-                embed.add_field(name='Delete', value='React with ❌ to delete your own generation')
-                embed.add_field(name='Regenerate', value='React with 🔁 to regenerate with a different seed')
-                embed.add_field(name='Upscale', value='React with 👆 to upscale')
-                embed.add_field(name='Download', value='React with 💾 to save the image')
+                #embed.add_field(name='Compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
+                #                inline=False)
+                embed.add_field(name='', value='• ❌ - delete your own generation',
+                                inline=True)
+                embed.add_field(name='', value='• 🔁 - use a different seed [TODO]',
+                                inline=True)
+                embed.add_field(name='', value='• 👁 - restore faces [TODO]',
+                                inline=True)
+                embed.add_field(name='', value='• 👆 - upscale [TODO]',
+                                inline=True)
+                embed.add_field(name='', value='• 💾 - save the image [TODO]')
                 # fix errors if user doesn't have pfp
                 if queue_object.ctx.author.avatar is None:
                     embed.set_footer(
-                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator}')
+                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator} - created in ' + '{0:.3f} seconds'.format(end_time - start_time))
                 else:
                     embed.set_footer(
-                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator}',
+                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator} - created in ' + '{0:.3f} seconds'.format(end_time - start_time),
                         icon_url=queue_object.ctx.author.avatar.url)
 
                 event_loop.create_task(
