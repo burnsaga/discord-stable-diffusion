@@ -5,7 +5,8 @@ from abc import ABC
 import discord
 from discord.ext import commands
 from src.core.logging import get_logger
-
+import aiohttp
+import io
 
 class Shanghai(commands.Bot, ABC):
     def __init__(self, args):
@@ -25,22 +26,35 @@ class Shanghai(commands.Bot, ABC):
         if message.author == self.user:
             try:
                 # Check if the message from Shanghai was actually a generation
-                if message.embeds[0].fields[0].name == '':
+                if message.embeds[0].fields[0].name == 'Compute used':
                     await message.add_reaction('❌')
                     #await message.add_reaction('🔁')
                     #await message.add_reaction('👁')
                     #await message.add_reaction('👆')
-                    #await message.add_reaction('💾')
-
+                    await message.add_reaction('💾')
             except:
                 pass
 
-    async def on_raw_reaction_add(self, ctx):
-        if ctx.emoji.name == '❌':
-            message = await self.get_channel(ctx.channel_id).fetch_message(ctx.message_id)
+
+    async def on_raw_reaction_add(self, payload):
+        if payload.emoji.name == '❌':
+            message = await self.get_channel(payload.channel_id).fetch_message(payload.message_id)
             if message.embeds:
                 # look at the message footer to see if the generation was by the user who reacted
-                if message.embeds[0].footer.text == f'{ctx.member.name}#{ctx.member.discriminator}':
+                if message.embeds[0].footer.text == f'{payload.member.name}#{payload.member.discriminator}':
                     await message.delete()
-# queue_object.ctx.channel.send(content=f'<@{queue_object.ctx.author.id}>', embed=embed,
-#                                                  file=discord.File(fp=buffer, filename=f'{seed}.png')))
+        elif payload.emoji.name == '💾':
+            message = await self.get_channel(payload.channel_id).fetch_message(payload.message_id)
+            if message.embeds:
+                embed = message.embeds[0]
+                if embed.type == 'image':
+                    print('save')
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(embed.url) as resp:
+                            if resp.status != 200:
+                                return await message.channel.send('Could not download file...')
+                            data = io.BytesIO(await resp.read())
+                            filename = f'{embed.title}.{embed.url.split(".")[-1]}'
+                            with open(filename, 'wb') as f:
+                                f.write(data.getbuffer())
+                            await message.channel.send(f'Downloaded image to {os.getcwd()}')

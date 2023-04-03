@@ -187,9 +187,9 @@ class StableCog(commands.Cog, name='Stable Diffusion', description='Create image
                 embed = discord.Embed()
                 embed.colour = embed_color
                 #embed.add_field(name='Command', value=f'``{queue_object.command_str}``', inline=False)
-                #embed.add_field(name='Compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
-                #                inline=False)
-                embed.add_field(name='', value='• ❌ - delete your own generation',
+                embed.add_field(name='Compute used', value='``{0:.3f}`` seconds'.format(end_time - start_time),
+                                inline=False)
+                embed.add_field(name='', value='• ❌ - delete your own image',
                                 inline=True)
                 embed.add_field(name='', value='• 🔁 - use a different seed [TODO]',
                                 inline=True)
@@ -201,11 +201,10 @@ class StableCog(commands.Cog, name='Stable Diffusion', description='Create image
                 # fix errors if user doesn't have pfp
                 if queue_object.ctx.author.avatar is None:
                     embed.set_footer(
-                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator} - created in ' + '{0:.3f} seconds'.format(end_time - start_time))
+                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator}')
                 else:
                     embed.set_footer(
-                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator} - created in ' + '{0:.3f} seconds'.format(end_time - start_time),
-                        icon_url=queue_object.ctx.author.avatar.url)
+                        text=f'{queue_object.ctx.author.name}#{queue_object.ctx.author.discriminator}')
 
                 event_loop.create_task(
                     queue_object.ctx.channel.send(content=f'<@{queue_object.ctx.author.id}>', embed=embed,
